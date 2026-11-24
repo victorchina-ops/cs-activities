@@ -1,0 +1,11 @@
+{
+ "kind": "compile_error",
+ "errors": [
+  {
+   "line": 6,
+   "col": 44,
+   "code": "CS7036"
+  }
+ ],
+ "hash": "b6fc99dbd7316301430837499a0449f8d0f4862e"
+}

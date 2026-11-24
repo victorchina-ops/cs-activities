@@ -1,0 +1,18 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int a = 17, b = 5;
+        Console.WriteLine(a + b);
+        Console.WriteLine(a - b);
+        Console.WriteLine(a * b);
+        Console.WriteLine(a / b);
+        Console.WriteLine(a % b);
+        Console.WriteLine(-a / b);
+        Console.WriteLine(-a % b);
+        Console.WriteLine(a % -b);
+        Console.WriteLine(a / b * b + a % b);
+    }
+}

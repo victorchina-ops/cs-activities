@@ -1,0 +1,850 @@
+{
+  "id": "w1",
+  "chapter": 2,
+  "minutes": 90,
+  "title": "סדנה 1 - קלט, חישוב ופלט",
+  "subtitle": "חילוק שלמים ושארית, שיטות עם פרמטרים, ותוכנית שלמה מקלט לפלט",
+  "intro": "מתכנתים אמיתיים לא מתחילים מלכתוב קוד. הם קודם מבינים את הבעיה, מתכננים, חושבים על בדיקות, כותבים שלד של האלגוריתם, ורק אז כותבים קוד ובסוף מסתכלים לאחור מה למדו. בסדנה הזו תעברו את ששת השלבים (הבנה, תכנון, בדיקות, שלד, קוד, רפלקציה) בשלוש משימות, ובכל משימה תקבלו פחות עזרה ויותר אחריות.",
+  "image": "img/w1.webp",
+  "concepts": [
+    "קלט עם int.Parse(Console.ReadLine())",
+    "חילוק שלמים / ושארית %",
+    "שיטות static עם פרמטרים וערך מוחזר",
+    "שרשור טקסט ומספר בהדפסה",
+    "בדיקת תוכנית עם מקרי קצה"
+  ],
+  "tasks": [
+    {
+      "id": "w1t1",
+      "mode": "parsons",
+      "title": "קבוצות לטיול",
+      "story": "כיתה י' יוצאת לטיול באזור הערבה והמורה רוצה לחלק את התלמידים לקבוצות באותו גודל. התוכנית קולטת קודם את מספר התלמידים ואחר כך את גודל הקבוצה (כל מספר בשורה נפרדת). היא מדפיסה שתי שורות: בשורה הראשונה \"קבוצות מלאות: \" ואחריה מספר הקבוצות המלאות, ובשורה השנייה \"נשארים: \" ואחריה מספר התלמידים שלא נכנסו לקבוצה מלאה. מותר להדפיס הודעות לפני הקלט, הבדיקה מחפשת רק את שתי השורות הנדרשות.",
+      "inputSpec": [
+        "שורה 1: מספר התלמידים (מספר שלם)",
+        "שורה 2: גודל קבוצה (מספר שלם גדול מ-0)"
+      ],
+      "outputSpec": [
+        "קבוצות מלאות: <מספר>",
+        "נשארים: <מספר>"
+      ],
+      "example": {
+        "input": [
+          "23",
+          "5"
+        ],
+        "output": [
+          "קבוצות מלאות: 4",
+          "נשארים: 3"
+        ]
+      },
+      "stages": {
+        "understand": {
+          "questions": [
+            {
+              "id": "u1",
+              "type": "mc",
+              "prompt": "מה התוכנית תדפיס עבור הקלט 17 ואחריו 5?",
+              "options": [
+                "קבוצות מלאות: 3 ואחריה נשארים: 2",
+                "קבוצות מלאות: 3.4 ואחריה נשארים: 0",
+                "קבוצות מלאות: 2 ואחריה נשארים: 3",
+                "קבוצות מלאות: 4 ואחריה נשארים: 2"
+              ],
+              "correct": 0,
+              "explain": "17 חלקי 5 בחילוק שלמים נותן 3 (לא 3.4), והשארית היא 17 - 15 = 2."
+            },
+            {
+              "id": "u2",
+              "type": "mc",
+              "prompt": "איזה ביטוי נותן את מספר התלמידים שנשארו בלי קבוצה מלאה?",
+              "options": [
+                "students / groupSize",
+                "students % groupSize",
+                "students - groupSize",
+                "students * groupSize"
+              ],
+              "correct": 1,
+              "explain": "האופרטור % נותן את שארית החילוק, וזה בדיוק מי שלא הספיק להיכנס לקבוצה מלאה."
+            },
+            {
+              "id": "u3",
+              "type": "text",
+              "prompt": "הסבירו במילים שלכם מה התוכנית צריכה לעשות",
+              "minChars": 15
+            }
+          ]
+        },
+        "plan": {
+          "fields": [
+            {
+              "id": "in",
+              "label": "קלט - אילו משתנים ומאיזה טיפוס?",
+              "placeholder": "אילו ערכים קולטים ומאיזה טיפוס"
+            },
+            {
+              "id": "proc",
+              "label": "עיבוד - אילו חישובים / תנאים?",
+              "placeholder": "אילו פעולות חשבון צריך"
+            },
+            {
+              "id": "out",
+              "label": "פלט - מה מודפס?",
+              "placeholder": "אילו שורות מדפיסים"
+            }
+          ],
+          "model": {
+            "in": "students (int) - מספר התלמידים, groupSize (int) - גודל קבוצה. שניהם נקלטים עם int.Parse(Console.ReadLine())",
+            "proc": "groups = students / groupSize (חילוק שלמים), left = students % groupSize (שארית)",
+            "out": "שתי שורות: \"קבוצות מלאות: \" + groups ואחריה \"נשארים: \" + left"
+          }
+        },
+        "tests": {
+          "predict": [
+            {
+              "input": [
+                "30",
+                "4"
+              ]
+            },
+            {
+              "input": [
+                "3",
+                "10"
+              ]
+            }
+          ],
+          "ownTests": 1,
+          "edgeHint": "נסו מקרה קצה: גודל הקבוצה גדול ממספר התלמידים (למשל 3 ו-10), או מספר תלמידים שמתחלק בדיוק (למשל 20 ו-5)."
+        },
+        "skeleton": {
+          "prompt": "סדרו את שלבי האלגוריתם",
+          "steps": [
+            "קלוט את מספר התלמידים",
+            "קלוט את גודל הקבוצה",
+            "חשב: קבוצות מלאות = תלמידים / גודל קבוצה",
+            "חשב: נשארים = תלמידים % גודל קבוצה",
+            "הדפס את מספר הקבוצות המלאות",
+            "הדפס את מספר התלמידים שנשארו"
+          ],
+          "distractors": [
+            "חשב: נשארים = תלמידים / גודל קבוצה",
+            "הדפס את התוצאה לפני שקולטים את הקלט"
+          ]
+        },
+        "code": {
+          "parsons": {
+            "lines": [
+              "using System;",
+              "class Program",
+              "{",
+              "    static void Main()",
+              "    {",
+              "        int students = int.Parse(Console.ReadLine());",
+              "        int groupSize = int.Parse(Console.ReadLine());",
+              "        int groups = students / groupSize;",
+              "        int left = students % groupSize;",
+              "        Console.WriteLine(\"קבוצות מלאות: \" + groups);",
+              "        Console.WriteLine(\"נשארים: \" + left);",
+              "    }",
+              "}"
+            ],
+            "fixed": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              11,
+              12
+            ],
+            "distractors": [
+              "int groups = students % groupSize;",
+              "int left = students / groupSize;",
+              "int groupSize = Console.ReadLine();",
+              "Console.WriteLine(\"נשארים: \" + groups);"
+            ]
+          },
+          "starter": "using System;\n\nclass Program\n{\n    static void Main()\n    {\n        \n    }\n}\n"
+        },
+        "reflect": {
+          "questions": [
+            {
+              "id": "r1",
+              "prompt": "איזו בדיקה נכשלה לכם בהתחלה (אם בכלל) ומה תיקנתם בקוד?",
+              "minChars": 15
+            },
+            {
+              "id": "r2",
+              "prompt": "מה היה קורה אם גודל הקבוצה היה 0? למה זה בעייתי בחילוק שלמים?",
+              "minChars": 15
+            }
+          ]
+        }
+      },
+      "hints": [
+        "מה ההבדל בין מספר הקבוצות המלאות לבין מי שנשאר בלי קבוצה, ואיזו פעולת חשבון נותנת כל אחד מהם בחילוק שלמים",
+        "בחילוק של שני מספרים שלמים (int) C# נותנת רק את החלק השלם. את השארית מקבלים עם האופרטור %.",
+        "int groups = students / groupSize;  ואחריה  int left = students % groupSize;  ואז מדפיסים עם \"קבוצות מלאות: \" + groups"
+      ],
+      "solution": "using System;\nclass Program\n{\n    static void Main()\n    {\n        int students = int.Parse(Console.ReadLine());\n        int groupSize = int.Parse(Console.ReadLine());\n        int groups = students / groupSize;\n        int left = students % groupSize;\n        Console.WriteLine(\"קבוצות מלאות: \" + groups);\n        Console.WriteLine(\"נשארים: \" + left);\n    }\n}",
+      "tests": [
+        {
+          "name": "דוגמה מהשאלה",
+          "input": [
+            "23",
+            "5"
+          ],
+          "expected": [
+            "קבוצות מלאות: 4",
+            "נשארים: 3"
+          ]
+        },
+        {
+          "name": "מספר תלמידים רגיל",
+          "input": [
+            "30",
+            "4"
+          ],
+          "expected": [
+            "קבוצות מלאות: 7",
+            "נשארים: 2"
+          ]
+        },
+        {
+          "name": "מתחלק בדיוק",
+          "input": [
+            "25",
+            "5"
+          ],
+          "expected": [
+            "קבוצות מלאות: 5",
+            "נשארים: 0"
+          ]
+        },
+        {
+          "name": "קבוצה אחת בדיוק",
+          "input": [
+            "12",
+            "12"
+          ],
+          "expected": [
+            "קבוצות מלאות: 1",
+            "נשארים: 0"
+          ]
+        },
+        {
+          "name": "קבוצה גדולה מהכיתה",
+          "input": [
+            "3",
+            "10"
+          ],
+          "expected": [
+            "קבוצות מלאות: 0",
+            "נשארים: 3"
+          ]
+        },
+        {
+          "name": "אין תלמידים",
+          "input": [
+            "0",
+            "5"
+          ],
+          "expected": [
+            "קבוצות מלאות: 0",
+            "נשארים: 0"
+          ]
+        },
+        {
+          "name": "מספרים גדולים",
+          "input": [
+            "100",
+            "7"
+          ],
+          "expected": [
+            "קבוצות מלאות: 14",
+            "נשארים: 2"
+          ]
+        }
+      ],
+      "commonMistakes": [
+        {
+          "pattern": "=\\s*Console\\.ReadLine\\s*\\(\\s*\\)",
+          "message": "Console.ReadLine() מחזירה טקסט. עטפו אותה ב-int.Parse(...) כדי לקבל מספר שלם."
+        },
+        {
+          "pattern": "double\\s+\\w+\\s*=",
+          "message": "חילוק שלמים צריך משתנים מטיפוס int. עם double תקבלו 3.4 במקום 3."
+        },
+        {
+          "pattern": "^(?![\\s\\S]*%)",
+          "message": "לא מצאנו את האופרטור % בקוד. הוא נותן את שארית החילוק, כלומר את מי שנשאר בלי קבוצה."
+        }
+      ]
+    },
+    {
+      "id": "w1t2",
+      "mode": "fill",
+      "title": "שעון עצר",
+      "story": "בתחרות ריצה בערבה מודדים זמן בשניות, אבל השעון צריך להציג שעות, דקות ושניות. התוכנית קולטת מספר שלם אחד: סך כל השניות. עליכם להשלים שלוש שיטות (GetHours, GetMinutes, GetSeconds) ואת ה-Main שקורא להן. התוכנית מדפיסה שלוש שורות: \"שעות: \" ואחריה מספר, \"דקות: \" ואחריה מספר ו-\"שניות: \" ואחריה מספר. הדקות והשניות תמיד קטנות מ-60. מותר להדפיס הודעות לפני הקלט.",
+      "inputSpec": [
+        "שורה 1: סך כל השניות (מספר שלם, 0 או יותר)"
+      ],
+      "outputSpec": [
+        "שעות: <מספר>",
+        "דקות: <מספר>",
+        "שניות: <מספר>"
+      ],
+      "example": {
+        "input": [
+          "3725"
+        ],
+        "output": [
+          "שעות: 1",
+          "דקות: 2",
+          "שניות: 5"
+        ]
+      },
+      "stages": {
+        "understand": {
+          "questions": [
+            {
+              "id": "u1",
+              "type": "mc",
+              "prompt": "כמה שעות, דקות ושניות יש ב-3725 שניות?",
+              "options": [
+                "1 שעה, 2 דקות, 5 שניות",
+                "1 שעה, 62 דקות, 5 שניות",
+                "62 שעות, 5 דקות, 0 שניות",
+                "1 שעה, 25 דקות, 37 שניות"
+              ],
+              "correct": 0,
+              "explain": "3725 = 3600 + 120 + 5, כלומר שעה אחת, שתי דקות וחמש שניות. הדקות לא יכולות להיות 62 כי הן נספרות רק אחרי השעות השלמות."
+            },
+            {
+              "id": "u2",
+              "type": "mc",
+              "prompt": "מה הביטוי sec % 60 נותן?",
+              "options": [
+                "את מספר הדקות הכולל",
+                "את מספר השניות שנשארו אחרי שלקחנו דקות שלמות",
+                "את מספר השעות",
+                "תמיד 0"
+              ],
+              "correct": 1,
+              "explain": "% נותן שארית. אחרי שמורידים דקות שלמות (60 שניות כל אחת) נשארות פחות מ-60 שניות."
+            },
+            {
+              "id": "u3",
+              "type": "text",
+              "prompt": "הסבירו במילים שלכם מה התוכנית צריכה לעשות",
+              "minChars": 15
+            }
+          ]
+        },
+        "plan": {
+          "fields": [
+            {
+              "id": "in",
+              "label": "קלט - אילו משתנים ומאיזה טיפוס?",
+              "placeholder": "אילו משתנים"
+            },
+            {
+              "id": "proc",
+              "label": "עיבוד - אילו חישובים / תנאים?",
+              "placeholder": "מה עושה כל אחת מהשיטות"
+            },
+            {
+              "id": "out",
+              "label": "פלט - מה מודפס?",
+              "placeholder": "אילו שורות מדפיסים"
+            }
+          ],
+          "model": {
+            "in": "total (int) - סך כל השניות, נקלט עם int.Parse(Console.ReadLine())",
+            "proc": "GetHours: sec / 3600. GetMinutes: (sec % 3600) / 60. GetSeconds: sec % 60. כל שיטה מקבלת int ומחזירה int",
+            "out": "שלוש שורות: \"שעות: \" + GetHours(total), \"דקות: \" + GetMinutes(total), \"שניות: \" + GetSeconds(total)"
+          }
+        },
+        "tests": {
+          "predict": [
+            {
+              "input": [
+                "3725"
+              ]
+            },
+            {
+              "input": [
+                "3600"
+              ]
+            }
+          ],
+          "ownTests": 1,
+          "edgeHint": "נסו מקרה קצה: 59 שניות, 60 שניות או 3600 בדיוק. מה אמור להיות בכל שורה?"
+        },
+        "skeleton": {
+          "prompt": "סדרו את שלבי האלגוריתם",
+          "steps": [
+            "כתוב שיטה GetHours שמחזירה שניות חלקי 3600",
+            "כתוב שיטה GetMinutes: קח את השארית אחרי שעות שלמות (% 3600) וחלק ב-60",
+            "כתוב שיטה GetSeconds שמחזירה את השארית של חלוקה ב-60",
+            "ב-Main: קלוט את סך כל השניות",
+            "ב-Main: הדפס שעות, דקות ושניות בעזרת קריאה לשלוש השיטות"
+          ],
+          "distractors": [
+            "חשב דקות כ-שניות חלקי 60 בלי לקחת שארית",
+            "קלוט שלוש פעמים: שעות, דקות ושניות"
+          ]
+        },
+        "code": {
+          "fill": {
+            "template": "using System;\n\nclass Program\n{\n    static int GetHours(int sec)\n    {\n        return ⟦1⟧;\n    }\n\n    static int GetMinutes(int sec)\n    {\n        return ⟦2⟧;\n    }\n\n    static int GetSeconds(int sec)\n    {\n        return ⟦3⟧;\n    }\n\n    static void Main()\n    {\n        int total = ⟦4⟧;\n        Console.WriteLine(\"שעות: \" + ⟦5⟧);\n        Console.WriteLine(\"דקות: \" + ⟦6⟧);\n        Console.WriteLine(\"שניות: \" + ⟦7⟧);\n    }\n}",
+            "blanks": [
+              {
+                "id": 1,
+                "accept": [
+                  "sec / 3600",
+                  "sec/3600"
+                ],
+                "hint": "כמה שניות יש בשעה? כמה שעות שלמות נכנסות ב-sec?"
+              },
+              {
+                "id": 2,
+                "accept": [
+                  "sec % 3600 / 60",
+                  "(sec % 3600) / 60",
+                  "sec%3600/60",
+                  "(sec%3600)/60",
+                  "sec / 60 % 60",
+                  "sec/60%60",
+                  "(sec / 60) % 60"
+                ],
+                "hint": "קודם משאירים רק מה שאחרי השעות השלמות (% 3600), ואז מחלקים ב-60."
+              },
+              {
+                "id": 3,
+                "accept": [
+                  "sec % 60",
+                  "sec%60"
+                ],
+                "hint": "שניות הן מה שנשאר אחרי שלוקחים דקות שלמות."
+              },
+              {
+                "id": 4,
+                "accept": [
+                  "int.Parse(Console.ReadLine())",
+                  "int.Parse(Console.ReadLine( ))"
+                ],
+                "hint": "קוראים שורה ומפרשים אותה כמספר שלם."
+              },
+              {
+                "id": 5,
+                "accept": [
+                  "GetHours(total)"
+                ],
+                "hint": "קראו לשיטה ששמה GetHours והעבירו לה את total."
+              },
+              {
+                "id": 6,
+                "accept": [
+                  "GetMinutes(total)"
+                ],
+                "hint": "קראו לשיטה שמחשבת דקות."
+              },
+              {
+                "id": 7,
+                "accept": [
+                  "GetSeconds(total)"
+                ],
+                "hint": "קראו לשיטה שמחשבת שניות."
+              }
+            ]
+          },
+          "starter": "using System;\n\nclass Program\n{\n    static void Main()\n    {\n        \n    }\n}\n"
+        },
+        "reflect": {
+          "questions": [
+            {
+              "id": "r1",
+              "prompt": "איזו בדיקה נכשלה לכם בהתחלה (אם בכלל) ומה תיקנתם בקוד?",
+              "minChars": 15
+            },
+            {
+              "id": "r2",
+              "prompt": "מה ההבדל בין sec / 60 לבין sec % 60? תנו דוגמה עם 125 שניות.",
+              "minChars": 15
+            }
+          ]
+        }
+      },
+      "hints": [
+        "כמה שניות יש בשעה אחת? כמה שעות שלמות נכנסות במספר השניות שנקלט?",
+        "לדקות: קודם משאירים רק מה שנשאר אחרי השעות השלמות עם % 3600, ואז מחלקים ב-60. לשניות: שארית חלוקה ב-60.",
+        "return sec % 3600 / 60;  ובשיטה השלישית  return sec % 60;"
+      ],
+      "solution": "using System;\n\nclass Program\n{\n    static int GetHours(int sec)\n    {\n        return sec / 3600;\n    }\n\n    static int GetMinutes(int sec)\n    {\n        return sec % 3600 / 60;\n    }\n\n    static int GetSeconds(int sec)\n    {\n        return sec % 60;\n    }\n\n    static void Main()\n    {\n        int total = int.Parse(Console.ReadLine());\n        Console.WriteLine(\"שעות: \" + GetHours(total));\n        Console.WriteLine(\"דקות: \" + GetMinutes(total));\n        Console.WriteLine(\"שניות: \" + GetSeconds(total));\n    }\n}",
+      "tests": [
+        {
+          "name": "דוגמה מהשאלה",
+          "input": [
+            "3725"
+          ],
+          "expected": [
+            "שעות: 1",
+            "דקות: 2",
+            "שניות: 5"
+          ]
+        },
+        {
+          "name": "פחות מדקה",
+          "input": [
+            "59"
+          ],
+          "expected": [
+            "שעות: 0",
+            "דקות: 0",
+            "שניות: 59"
+          ]
+        },
+        {
+          "name": "דקה בדיוק",
+          "input": [
+            "60"
+          ],
+          "expected": [
+            "שעות: 0",
+            "דקות: 1",
+            "שניות: 0"
+          ]
+        },
+        {
+          "name": "שעה בדיוק",
+          "input": [
+            "3600"
+          ],
+          "expected": [
+            "שעות: 1",
+            "דקות: 0",
+            "שניות: 0"
+          ]
+        },
+        {
+          "name": "אפס שניות",
+          "input": [
+            "0"
+          ],
+          "expected": [
+            "שעות: 0",
+            "דקות: 0",
+            "שניות: 0"
+          ]
+        },
+        {
+          "name": "סוף היממה",
+          "input": [
+            "86399"
+          ],
+          "expected": [
+            "שעות: 23",
+            "דקות: 59",
+            "שניות: 59"
+          ]
+        },
+        {
+          "name": "עוד דוגמה",
+          "input": [
+            "7384"
+          ],
+          "expected": [
+            "שעות: 2",
+            "דקות: 3",
+            "שניות: 4"
+          ]
+        }
+      ],
+      "commonMistakes": [
+        {
+          "pattern": "return\\s+sec\\s*/\\s*60\\s*;",
+          "message": "sec / 60 הוא מספר הדקות הכולל, גם אלה שכבר נספרו בשעות. צריך להשאיר רק את הדקות שאחרי השעות השלמות."
+        },
+        {
+          "pattern": "=\\s*Console\\.ReadLine\\s*\\(\\s*\\)",
+          "message": "Console.ReadLine() מחזירה טקסט. עטפו אותה ב-int.Parse(...)."
+        },
+        {
+          "pattern": "static\\s+void\\s+Get",
+          "message": "שיטה שמחזירה ערך חייבת להיות מטיפוס int ולא void, ולהסתיים ב-return."
+        }
+      ]
+    },
+    {
+      "id": "w1t3",
+      "mode": "blank",
+      "title": "הקיוסק",
+      "story": "בקיוסק של בית הספר קונים כריכים ושתייה. התוכנית קולטת חמישה מספרים שלמים, כל אחד בשורה נפרדת, לפי הסדר: מחיר כריך, כמות כריכים, מחיר שתייה, כמות שתייה וסכום שהלקוח שילם (תמיד לפחות סכום הקנייה). כתבו שיטה static int Total(int price, int count) שמחזירה מחיר כפול כמות, והשתמשו בה פעמיים. התוכנית מדפיסה ארבע שורות: \"סך הכל: \", \"עודף: \", \"מטבעות של עשר: \" (כמה מטבעות של 10 שקלים נכנסים בעודף) ו-\"שארית בעודף: \" (כמה שקלים בודדים נשארים), ובכל שורה מספר בסוף. מותר להדפיס הודעות לפני הקלט.",
+      "inputSpec": [
+        "שורה 1: מחיר כריך",
+        "שורה 2: כמות כריכים",
+        "שורה 3: מחיר שתייה",
+        "שורה 4: כמות שתייה",
+        "שורה 5: סכום ששולם"
+      ],
+      "outputSpec": [
+        "סך הכל: <מספר>",
+        "עודף: <מספר>",
+        "מטבעות של עשר: <מספר>",
+        "שארית בעודף: <מספר>"
+      ],
+      "example": {
+        "input": [
+          "18",
+          "2",
+          "7",
+          "3",
+          "100"
+        ],
+        "output": [
+          "סך הכל: 57",
+          "עודף: 43",
+          "מטבעות של עשר: 4",
+          "שארית בעודף: 3"
+        ]
+      },
+      "stages": {
+        "understand": {
+          "questions": [
+            {
+              "id": "u1",
+              "type": "mc",
+              "prompt": "מחיר כריך 12, קנו 2 כריכים. מחיר שתייה 5, קנו 1. שולמו 50 שקלים. מה העודף?",
+              "options": [
+                "29",
+                "21",
+                "45",
+                "38"
+              ],
+              "correct": 1,
+              "explain": "סך הכל: 12*2 + 5*1 = 29, והעודף הוא 50 - 29 = 21."
+            },
+            {
+              "id": "u2",
+              "type": "mc",
+              "prompt": "העודף הוא 43 שקלים. כמה מטבעות של 10 ומה השארית?",
+              "options": [
+                "4 מטבעות ושארית 3",
+                "4.3 מטבעות ושארית 0",
+                "3 מטבעות ושארית 4",
+                "43 מטבעות ושארית 0"
+              ],
+              "correct": 0,
+              "explain": "43 / 10 = 4 בחילוק שלמים (4 מטבעות), ו-43 % 10 = 3 שקלים בודדים."
+            },
+            {
+              "id": "u3",
+              "type": "text",
+              "prompt": "הסבירו במילים שלכם מה התוכנית צריכה לעשות",
+              "minChars": 15
+            }
+          ]
+        },
+        "plan": {
+          "fields": [
+            {
+              "id": "in",
+              "label": "קלט - אילו משתנים ומאיזה טיפוס?",
+              "placeholder": "אילו חמישה ערכים ומה הסדר"
+            },
+            {
+              "id": "proc",
+              "label": "עיבוד - אילו חישובים / תנאים?",
+              "placeholder": "אילו חישובים ובאיזה סדר"
+            },
+            {
+              "id": "out",
+              "label": "פלט - מה מודפס?",
+              "placeholder": "אילו ארבע שורות"
+            }
+          ],
+          "model": {
+            "in": "חמישה משתנים int: sandwichPrice, sandwichCount, drinkPrice, drinkCount, paid. כולם עם int.Parse(Console.ReadLine())",
+            "proc": "שיטה Total(price, count) מחזירה price * count. sum = Total(כריכים) + Total(שתייה). change = paid - sum. coins = change / 10. rest = change % 10",
+            "out": "ארבע שורות: סך הכל, עודף, מטבעות של עשר, שארית בעודף. בכל שורה טקסט ואחריו משתנה"
+          }
+        },
+        "tests": {
+          "predict": [
+            {
+              "input": [
+                "18",
+                "2",
+                "7",
+                "3",
+                "100"
+              ]
+            },
+            {
+              "input": [
+                "10",
+                "1",
+                "5",
+                "2",
+                "20"
+              ]
+            }
+          ],
+          "ownTests": 1,
+          "edgeHint": "נסו מקרה קצה: התשלום שווה בדיוק לסכום הקנייה (עודף 0), או עודף קטן מ-10."
+        },
+        "skeleton": {
+          "prompt": "סדרו את שלבי האלגוריתם",
+          "steps": [
+            "כתוב שיטה Total שמחזירה מחיר כפול כמות",
+            "ב-Main: קלוט חמישה מספרים שלמים לפי הסדר",
+            "חשב סך הכל: Total של הכריכים ועוד Total של השתייה",
+            "חשב עודף: סכום ששולם פחות סך הכל",
+            "חשב מטבעות של עשר: עודף / 10, ושארית: עודף % 10",
+            "הדפס את ארבע השורות"
+          ],
+          "distractors": [
+            "חשב עודף: סך הכל פחות סכום ששולם",
+            "חשב מטבעות של עשר: עודף % 10"
+          ]
+        },
+        "code": {
+          "starter": "using System;\n\nclass Program\n{\n    static void Main()\n    {\n        \n    }\n}\n"
+        },
+        "reflect": {
+          "questions": [
+            {
+              "id": "r1",
+              "prompt": "איזו בדיקה נכשלה לכם בהתחלה (אם בכלל) ומה תיקנתם בקוד?",
+              "minChars": 15
+            },
+            {
+              "id": "r2",
+              "prompt": "איפה בקוד שלכם השיטה Total חסכה לכם כתיבה כפולה? מה היה קורה אם היו שלושה סוגי מוצרים?",
+              "minChars": 15
+            }
+          ]
+        }
+      },
+      "hints": [
+        "אילו חמישה ערכים נקלטים ובאיזה סדר? איזה חישוב חוזר פעמיים (פעם לכריכים ופעם לשתייה) ולכן כדאי לשים אותו בשיטה",
+        "בשיטה Total: return price * count. ב-Main: sum = Total(...) + Total(...), change = paid - sum. מטבעות של 10 עם חילוק שלמים ושארית עם %.",
+        "int sum = Total(sandwichPrice, sandwichCount) + Total(drinkPrice, drinkCount);  int coins = change / 10;  int rest = change % 10;"
+      ],
+      "solution": "using System;\n\nclass Program\n{\n    static int Total(int price, int count)\n    {\n        return price * count;\n    }\n\n    static void Main()\n    {\n        int sandwichPrice = int.Parse(Console.ReadLine());\n        int sandwichCount = int.Parse(Console.ReadLine());\n        int drinkPrice = int.Parse(Console.ReadLine());\n        int drinkCount = int.Parse(Console.ReadLine());\n        int paid = int.Parse(Console.ReadLine());\n        int sum = Total(sandwichPrice, sandwichCount) + Total(drinkPrice, drinkCount);\n        int change = paid - sum;\n        int coins = change / 10;\n        int rest = change % 10;\n        Console.WriteLine(\"סך הכל: \" + sum);\n        Console.WriteLine(\"עודף: \" + change);\n        Console.WriteLine(\"מטבעות של עשר: \" + coins);\n        Console.WriteLine(\"שארית בעודף: \" + rest);\n    }\n}",
+      "tests": [
+        {
+          "name": "דוגמה מהשאלה",
+          "input": [
+            "18",
+            "2",
+            "7",
+            "3",
+            "100"
+          ],
+          "expected": [
+            "סך הכל: 57",
+            "עודף: 43",
+            "מטבעות של עשר: 4",
+            "שארית בעודף: 3"
+          ]
+        },
+        {
+          "name": "שילמו בדיוק",
+          "input": [
+            "10",
+            "1",
+            "5",
+            "2",
+            "20"
+          ],
+          "expected": [
+            "סך הכל: 20",
+            "עודף: 0",
+            "מטבעות של עשר: 0",
+            "שארית בעודף: 0"
+          ]
+        },
+        {
+          "name": "עודף קטן מ-10",
+          "input": [
+            "12",
+            "1",
+            "6",
+            "1",
+            "20"
+          ],
+          "expected": [
+            "סך הכל: 18",
+            "עודף: 2",
+            "מטבעות של עשר: 0",
+            "שארית בעודף: 2"
+          ]
+        },
+        {
+          "name": "עודף 10 בדיוק",
+          "input": [
+            "20",
+            "1",
+            "10",
+            "1",
+            "40"
+          ],
+          "expected": [
+            "סך הכל: 30",
+            "עודף: 10",
+            "מטבעות של עשר: 1",
+            "שארית בעודף: 0"
+          ]
+        },
+        {
+          "name": "בלי כריכים",
+          "input": [
+            "15",
+            "0",
+            "6",
+            "2",
+            "50"
+          ],
+          "expected": [
+            "סך הכל: 12",
+            "עודף: 38",
+            "מטבעות של עשר: 3",
+            "שארית בעודף: 8"
+          ]
+        },
+        {
+          "name": "קנייה גדולה",
+          "input": [
+            "25",
+            "4",
+            "8",
+            "5",
+            "200"
+          ],
+          "expected": [
+            "סך הכל: 140",
+            "עודף: 60",
+            "מטבעות של עשר: 6",
+            "שארית בעודף: 0"
+          ]
+        }
+      ],
+      "commonMistakes": [
+        {
+          "pattern": "=\\s*Console\\.ReadLine\\s*\\(\\s*\\)",
+          "message": "Console.ReadLine() מחזירה טקסט. עטפו אותה ב-int.Parse(...) כדי לקבל מספר שלם."
+        },
+        {
+          "pattern": "^(?![\\s\\S]*static\\s+int\\s+Total\\s*\\()",
+          "message": "לא מצאנו שיטה בשם Total. כתבו static int Total(int price, int count) ששמה מעל Main בתוך class Program."
+        },
+        {
+          "pattern": "double\\s+\\w+\\s*=",
+          "message": "כל המספרים כאן שלמים. אם משתמשים ב-double, חילוק ב-10 ייתן שברים במקום מספר מטבעות."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+ "kind": "compile_error",
+ "errors": [
+  {
+   "line": 7,
+   "col": 9,
+   "code": "CS0246"
+  }
+ ],
+ "hash": "8e3626defe30f3311ca64f9addcd514c111f4370"
+}

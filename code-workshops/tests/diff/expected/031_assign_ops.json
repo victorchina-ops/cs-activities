@@ -1,0 +1,6 @@
+{
+ "kind": "ok",
+ "stdout": "15\n12\n24\n4\n1\n10.5\nab1c2.5\n8\nb\n102\n",
+ "exit": 0,
+ "hash": "1e261e074c87fa04fc742af16b79e74534a321ff"
+}

@@ -1,0 +1,11 @@
+{
+ "kind": "compile_error",
+ "errors": [
+  {
+   "line": 7,
+   "col": 30,
+   "code": "CS1026"
+  }
+ ],
+ "hash": "f4c57caca1f98203eb6dd1d9e6cda93dfdcf81b8"
+}

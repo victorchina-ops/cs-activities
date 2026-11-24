@@ -1,0 +1,6 @@
+{
+ "kind": "ok",
+ "stdout": "a: b: sum=28\nfull groups: 4\nleft: 3\n",
+ "exit": 0,
+ "hash": "0be56e00574a33a4307370ae90841dc70d1bca6c"
+}

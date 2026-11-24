@@ -1,0 +1,6 @@
+{
+ "kind": "ok",
+ "stdout": "3\n-3\n65\nB\nc\n2.5\n2147483647\n-2147483648\n0\nNaN\nA\n5\n",
+ "exit": 0,
+ "hash": "908c291d24d21416a7caa88547b26bf60da64c6e"
+}

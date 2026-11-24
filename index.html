@@ -1,3 +1,78 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>פעילויות במדעי המחשב</title></head>
-<body style="font-family:system-ui,sans-serif;padding:40px"><h1>פעילויות במדעי המחשב</h1><p>האתר בהקמה.</p></body></html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10213a">
+  <title>פעילויות במדעי המחשב</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --night:#10213a; --sand:#f6efe2; --ink:#1c2b3a; --sun:#e8791c; --sunb:#f6a03d; --green:#0f7a55; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:"Heebo","Segoe UI",Arial,sans-serif; font-size:17px; line-height:1.55; color:var(--ink); background:var(--sand);
+      background-image: radial-gradient(circle at 15% -10%, #fff7e6 0, transparent 40%), radial-gradient(circle at 100% 0, #fbe8cf 0, transparent 35%); min-height:100vh; }
+    header { background:var(--night); color:#fff; border-bottom:3px solid var(--sun); }
+    .in { max-width:1080px; margin:0 auto; padding:0 20px; }
+    header .in { padding-top:34px; padding-bottom:34px; }
+    h1 { margin:0 0 6px; font-size:2.2rem; font-weight:800; line-height:1.2; }
+    header p { margin:0; color:#c9d6e8; font-size:1.1rem; }
+    .mark { display:inline-grid; place-items:center; width:46px; height:46px; border-radius:14px; background:var(--sun); color:var(--night); margin-bottom:12px; }
+    main { padding:28px 0 60px; }
+    h2 { font-size:1.4rem; margin:0 0 14px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(290px, 1fr)); gap:20px; }
+    .card { display:flex; flex-direction:column; background:#fff; border-radius:18px; overflow:hidden; text-decoration:none; color:inherit; box-shadow:0 1px 2px rgba(16,33,58,.08),0 6px 18px rgba(16,33,58,.08); transition:transform .2s, box-shadow .2s; }
+    .card:hover { transform:translateY(-3px); box-shadow:0 10px 28px rgba(16,33,58,.16); }
+    .card:focus-visible { outline:3px solid #1d4ed8; outline-offset:3px; }
+    .thumb { aspect-ratio:16/9; background:linear-gradient(135deg,#1d3d63 0%,#2f6b7c 55%,#e8a35a 130%); position:relative; overflow:hidden; }
+    .thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .body { padding:16px 18px 20px; display:flex; flex-direction:column; gap:6px; flex:1; }
+    .body h3 { margin:0; font-size:1.2rem; } .body p { margin:0; color:#44556a; font-size:.96rem; }
+    .tags { list-style:none; display:flex; gap:6px; flex-wrap:wrap; margin:4px 0 0; padding:0; }
+    .tags li { background:var(--sand); border:1px solid #ebdfc8; border-radius:999px; padding:0 10px; font-size:.82rem; }
+    .go { margin-top:auto; padding-top:10px; font-weight:800; color:var(--green); }
+    footer { color:#44556a; font-size:.85rem; text-align:center; padding:0 20px 30px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="in">
+      <span class="mark" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V6a2 2 0 014 0v6M12 21V9a2 2 0 00-4 0v4a2 2 0 002 2h2M8 21h8"/></svg></span>
+      <h1>פעילויות במדעי המחשב</h1>
+      <p>מעבדת קוד בערבה - כיתה י', מעלה שחרות</p>
+    </div>
+  </header>
+  <main class="in">
+    <h2>הפעילויות</h2>
+    <div class="grid" id="list" aria-live="polite"></div>
+  </main>
+  <footer>פעילויות נוספות יתווספו כאן במהלך השנה.</footer>
+  <script>
+    // Add new activities here: {title, desc, href, tags, image}
+    var ACTIVITIES = [
+      {
+        title: "סדנאות כתיבת קוד",
+        desc: "שלוש סדנאות ב-C#: קלט ופלט, תנאים ואופרטורים לוגיים. שישה שלבים בכל משימה, עם הרצה צעד אחר צעד.",
+        href: "code-workshops/",
+        tags: ["C#", "פרק 2", "פרק 3", "תנאים"],
+        image: "code-workshops/img/hero.webp"
+      }
+    ];
+    var list = document.getElementById('list');
+    ACTIVITIES.forEach(function (a) {
+      var card = document.createElement('a'); card.className = 'card'; card.href = a.href;
+      var th = document.createElement('div'); th.className = 'thumb';
+      if (a.image) { var im = document.createElement('img'); im.alt = ''; im.loading = 'lazy'; im.src = a.image; im.onerror = function () { im.remove(); }; th.appendChild(im); }
+      var b = document.createElement('div'); b.className = 'body';
+      var h3 = document.createElement('h3'); h3.textContent = a.title;
+      var p = document.createElement('p'); p.textContent = a.desc;
+      var ul = document.createElement('ul'); ul.className = 'tags';
+      (a.tags || []).forEach(function (t) { var li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
+      var go = document.createElement('span'); go.className = 'go'; go.textContent = 'כניסה לפעילות ←';
+      b.appendChild(h3); b.appendChild(p); b.appendChild(ul); b.appendChild(go);
+      card.appendChild(th); card.appendChild(b); list.appendChild(card);
+    });
+  </script>
+</body>
+</html>

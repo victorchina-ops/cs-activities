@@ -1,0 +1,6 @@
+{
+ "kind": "ok",
+ "stdout": "n=5 d=2.5 c=x b=True\n3x12\n195c\nab\n98\nb\nsum: 8\nsum: 53\n[]\n7.5!\n2|2.5|2\n",
+ "exit": 0,
+ "hash": "c6cc41a9e7ad4cc6b7afa2c13fd2d769dd43df3f"
+}

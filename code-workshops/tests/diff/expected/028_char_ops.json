@@ -1,0 +1,6 @@
+{
+ "kind": "ok",
+ "stdout": "b\n99\nc\n98\nTrue True Q True True\nTrue\n25\nZ\nTrue\n'\\\t|\n14\n",
+ "exit": 0,
+ "hash": "33f94c2832e08dc7ac863795acad02bab5799e13"
+}

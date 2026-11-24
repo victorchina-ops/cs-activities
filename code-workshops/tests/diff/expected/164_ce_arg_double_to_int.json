@@ -1,0 +1,11 @@
+{
+ "kind": "compile_error",
+ "errors": [
+  {
+   "line": 6,
+   "col": 48,
+   "code": "CS1503"
+  }
+ ],
+ "hash": "ffb4b020c5b548cc5620c45ef2d3522df4c7cf51"
+}

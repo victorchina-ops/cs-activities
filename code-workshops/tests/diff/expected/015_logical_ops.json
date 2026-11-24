@@ -1,0 +1,6 @@
+{
+ "kind": "ok",
+ "stdout": "True\nTrue\nFalse\nFalse\nTrue\nTrue\nFalse\nTrue\nFalse\n",
+ "exit": 0,
+ "hash": "da228bc9d29592d09a152af43986a34f43d55b85"
+}

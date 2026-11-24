@@ -1,0 +1,6 @@
+{
+ "kind": "ok",
+ "stdout": "21\n2147483647\n-2147483648\n1008\n35\n-Infinity\n",
+ "exit": 0,
+ "hash": "7eec276002ebfd40694fba974ed5c126635eeb56"
+}

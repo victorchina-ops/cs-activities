@@ -1,0 +1,11 @@
+{
+ "kind": "compile_error",
+ "errors": [
+  {
+   "line": 0,
+   "col": 0,
+   "code": "CS5001"
+  }
+ ],
+ "hash": "c9258bc756dd7b1a456bf50e6bce9e5fdbb0abce"
+}

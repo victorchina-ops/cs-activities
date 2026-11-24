@@ -1,0 +1,11 @@
+{
+ "kind": "compile_error",
+ "errors": [
+  {
+   "line": 8,
+   "col": 16,
+   "code": "CS0029"
+  }
+ ],
+ "hash": "02ab793142e372646802a44ab1020078aae03c4f"
+}

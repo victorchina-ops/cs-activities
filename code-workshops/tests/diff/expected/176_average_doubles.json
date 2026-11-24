@@ -1,0 +1,6 @@
+{
+ "kind": "ok",
+ "stdout": "avg = 18.333333333333332\navg2 = 18\nrounded = 18.33\narea = 314.1592653589793\n18.333333333333332\n10\n",
+ "exit": 0,
+ "hash": "24946e046a317d5db1f51be5cba76bd0fe7b9bb6"
+}

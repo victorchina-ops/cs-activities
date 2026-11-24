@@ -1,0 +1,6 @@
+{
+ "kind": "ok",
+ "stdout": "11\nHELLO WORLD\nhello world\nWorld\nHello\n6\n-1\nTrue\nHeLLo WorLd\npad|\nTrue False\n007\nH\n212\noe\nd\nTrue\nTrue\nTrue\n0\n",
+ "exit": 0,
+ "hash": "bff511fcbd819adc312d899065ddefb163e10fbb"
+}

@@ -1,0 +1,11 @@
+{
+ "kind": "compile_error",
+ "errors": [
+  {
+   "line": 8,
+   "col": 22,
+   "code": "CS0163"
+  }
+ ],
+ "hash": "7203b73ca902d7e74a74026d0981094ec78f2cd1"
+}

@@ -1,0 +1,46 @@
+{
+ "kind": "compile_error",
+ "errors": [
+  {
+   "line": 7,
+   "col": 13,
+   "code": "CS1001"
+  },
+  {
+   "line": 7,
+   "col": 13,
+   "code": "CS1002"
+  },
+  {
+   "line": 7,
+   "col": 13,
+   "code": "CS1513"
+  },
+  {
+   "line": 7,
+   "col": 19,
+   "code": "CS1001"
+  },
+  {
+   "line": 7,
+   "col": 19,
+   "code": "CS1513"
+  },
+  {
+   "line": 7,
+   "col": 19,
+   "code": "CS1514"
+  },
+  {
+   "line": 7,
+   "col": 19,
+   "code": "CS1519"
+  },
+  {
+   "line": 9,
+   "col": 1,
+   "code": "CS1022"
+  }
+ ],
+ "hash": "3277290c294c5881a2b82432e2b58b821f3c813e"
+}

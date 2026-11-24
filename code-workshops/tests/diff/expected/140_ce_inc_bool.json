@@ -1,0 +1,11 @@
+{
+ "kind": "compile_error",
+ "errors": [
+  {
+   "line": 8,
+   "col": 9,
+   "code": "CS0023"
+  }
+ ],
+ "hash": "8e208f51cdb16981ecf417cdc4be9ec419ccea7b"
+}

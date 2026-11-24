@@ -1,0 +1,16 @@
+{
+ "kind": "compile_error",
+ "errors": [
+  {
+   "line": 7,
+   "col": 27,
+   "code": "CS1056"
+  },
+  {
+   "line": 7,
+   "col": 33,
+   "code": "CS1056"
+  }
+ ],
+ "hash": "c8f3dcb28135ac0534abce98cbc6ecd1b261c0af"
+}

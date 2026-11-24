@@ -1,0 +1,6 @@
+{
+ "kind": "ok",
+ "stdout": "n=5, d=2.5, s=x\n10 2.50    5| x  | {brace}\nbig\n5str2.5\n",
+ "exit": 0,
+ "hash": "bf0c94ad56889c3d1f81cd8b87e4d2403b3a078f"
+}

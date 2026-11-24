@@ -1,0 +1,11 @@
+{
+ "kind": "compile_error",
+ "errors": [
+  {
+   "line": 6,
+   "col": 44,
+   "code": "CS1501"
+  }
+ ],
+ "hash": "384cc9969abc68e611ac123e90a2b226c44f82fb"
+}

@@ -1,0 +1,6 @@
+{
+ "kind": "ok",
+ "stdout": "שלום עולם\nab\n\ntab\there \"quoted\" back\\slash\n",
+ "exit": 0,
+ "hash": "4c71fcb64a6d3aeccce0438db1b82235d56b81a3"
+}

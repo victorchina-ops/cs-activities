@@ -115,6 +115,9 @@ Runtime errors: `שורה 7: חלוקה באפס (DivideByZeroException)`, `שו
         "tests": { "predict": [ { "input": ["30","4"] }, { "input": ["12","12"] } ],   // student predicts output; the app computes the truth by running the solution
                    "ownTests": 1, "edgeHint": "נסו מקרה קצה: ..." },
         "skeleton": { "prompt": "סדרו את שלבי האלגוריתם", "steps": ["...", "...", "..."], "distractors": ["..."] },  // correct order; app shuffles
+        // optional order constraints (js/order.js) - without them the exact order of `steps` is required:
+        //   "deps": { "3": [0, 1] }   step 3 must come after steps 0 and 1;  "together": [[1, 2, 3]]  these steps must be adjacent.
+        //   Any order that respects them is accepted (independent calculations may be swapped, a method may come before or after Main).
         "code": {
            // parsons: correct full program lines in order (with indentation spaces), plus distractor lines that must NOT be used
            "parsons": { "lines": ["using System;", "class Program", "{", "    static void Main()", "    {", "...", "    }", "}"], "fixed": [0,1,2,3,4], "distractors": ["..."] },
@@ -179,6 +182,14 @@ GET `?action=ping` -> `{ ok: true, version }`.
 
 ## 4. Scoring (computed in the browser, stored in the sheet; teacher approves)
 total = tests (60 x bestPassed/testsTotal) + planning (25: understand 8 [mc correct on first try 3 each + text 2], plan 7, predictions 5 x fraction correct, skeleton 5 if correct (3 if correct after retry)) + reflection (15 split equally over answered questions with >= minChars) - hintPenalty (first hint free, then 3 per hint, max 9). Round to integer, clamp 0..100.
+
+### Changes of 25.11.2026 (after the first lesson)
+- Skeleton stage: order is checked against `deps` / `together` (see section 2), not against one fixed order.
+- Predictions (stage "tests"): a wrong prediction stays editable and can be checked again; "הצגת הפלט האמיתי" reveals the real
+  output of that row and closes it. A prediction counts as correct if it was right at a check made before its output was revealed.
+- Plan stage: the plan stays editable after the comparison with the model plan.
+- Fill mode quick check: an answer that is not on the `accept` list is shown as "unknown" (yellow), not as wrong; only the tests decide.
+- Vocabulary helper: `js/glossary.js`, `data/glossary.json`, `css/glossary.css` (terms + a guide about methods).
 
 ## 5. Front-end files (agent: UI)
 `index.html`, `css/style.css`, `js/app.js`, `js/config.js` (`window.CW_CONFIG = { ENDPOINT: "", APP_KEY: "...", CLASS_LABEL: "...", VERSION: "1.0.0" }`).

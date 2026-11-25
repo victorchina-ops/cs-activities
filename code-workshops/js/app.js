@@ -819,7 +819,7 @@
     var grid = h('div', { class: 'plan-grid' });
     var foot = h('div', { class: 'stage-foot' });
     var model = h('div', { class: 'plan-compare' });
-    var tas = {};
+    var tas = {}, mine = {};
     function ready() { return P.fields.every(function (f) { return (A[f.id] || '').trim().length >= 5; }); }
     function updateFoot() {
       clear(foot);
@@ -837,17 +837,17 @@
       clear(model);
       if (!(A._shown || T.done.plan)) return;
       model.appendChild(h('h3', null, 'השוואה: התוכנית שלי מול תוכנית לדוגמה'));
-      model.appendChild(h('p', { class: 'muted' }, 'אין צורך שהניסוח יהיה זהה. בדקו: האם חשבתם על אותם משתנים, אותם חישובים ואותו פלט? מה כדאי להוסיף לתוכנית שלכם?'));
+      model.appendChild(h('p', { class: 'muted' }, 'אין צורך שהניסוח יהיה זהה. בדקו: האם חשבתם על אותם משתנים, אותם חישובים ואותו פלט? אפשר לתקן עכשיו את התוכנית שלכם בשדות שלמעלה - התיקון נשמר ומופיע כאן.'));
       P.fields.forEach(function (f) {
         model.appendChild(h('div', { class: 'cmp-row' },
-          h('div', { class: 'cmp mine' }, h('h4', null, 'שלי - ' + shortLabel(f.label)), h('p', null, A[f.id] || '')),
+          h('div', { class: 'cmp mine' }, h('h4', null, 'שלי - ' + shortLabel(f.label)), (mine[f.id] = h('p', null, A[f.id] || ''))),
           h('div', { class: 'cmp ref' }, h('h4', null, 'לדוגמה'), h('p', null, (P.model || {})[f.id] || ''))));
       });
     }
     P.fields.forEach(function (f) {
       var ta = h('textarea', { rows: 3, class: 'txt', id: 'pf-' + f.id, placeholder: f.placeholder || '' });
       ta.value = A[f.id] || '';
-      ta.addEventListener('input', function () { A[f.id] = ta.value; ctx.save(); if (!(A._shown || T.done.plan)) updateFoot(); });
+      ta.addEventListener('input', function () { A[f.id] = ta.value; ctx.save(); if (!(A._shown || T.done.plan)) updateFoot(); else if (mine[f.id]) mine[f.id].textContent = ta.value; });
       tas[f.id] = ta;
       grid.appendChild(h('div', { class: 'field' }, h('label', { for: 'pf-' + f.id }, f.label), ta));
     });
@@ -871,20 +871,36 @@
     var foot = h('div', { class: 'stage-foot' });
     var checkMsg = h('div', { class: 'feedback', role: 'status', hidden: true });
 
+    // Rows checked before retries existed (the real output is already on screen) stay closed.
+    if (A.checked && !A.revealed) { A.revealed = rows.map(function () { return true; }); A.rowOk = (A.predCorrect || []).slice(); }
+    A.revealed = A.revealed || rows.map(function () { return false; });
+    A.rowOk = A.rowOk || [];
+    function rowClosed(i) { return !!A.checked && (A.rowOk[i] === true || A.revealed[i] === true); }
+    function openRows() { return rows.filter(function (r, i) { return !rowClosed(i); }).length; }
+
     function drawPred() {
       clear(tbl);
       rows.forEach(function (r, i) {
-        var checked = !!A.checked;
-        var ta = h('textarea', { rows: Math.max(2, (A.truth && A.truth[i] ? nonEmptyLines(A.truth[i]).length : 3)), class: 'txt mono-in', dir: 'ltr', disabled: checked, 'aria-label': 'חיזוי פלט לבדיקה ' + (i + 1),
+        var checked = !!A.checked, closed = rowClosed(i), okRow = checked && A.rowOk[i] === true;
+        var ta = h('textarea', { rows: Math.max(2, (closed && A.truth && A.truth[i] ? nonEmptyLines(A.truth[i]).length : 3)), class: 'txt mono-in', dir: 'ltr', disabled: closed, 'aria-label': 'חיזוי פלט לבדיקה ' + (i + 1),
           placeholder: 'מה יודפס?' });
         ta.value = A.preds[i] || '';
         ta.addEventListener('input', function () { A.preds[i] = ta.value; ctx.save(); updateFoot(); });
-        var card = h('div', { class: 'pred-row' + (checked ? (A.predCorrect[i] ? ' ok' : ' no') : '') },
+        var side = null;
+        if (closed) {
+          side = h('div', { class: 'pred-real' },
+            h('h4', null, okRow ? 'נכון!' : 'הפלט האמיתי', okRow ? ico('check') : ico('x')),
+            h('pre', { class: 'codeblock', dir: 'ltr' }, (A.truth && A.truth[i]) || ''));
+        } else if (checked) {
+          side = h('div', { class: 'pred-real retry' },
+            h('h4', null, 'עוד לא מדויק', ico('x')),
+            h('p', { class: 'muted small' }, 'תקנו את החיזוי ולחצו על "בדיקה חוזרת". בדקו: מספר השורות, הניסוח המדויק והמספרים.'),
+            btn('הצגת הפלט האמיתי', { cls: 'ghost sm', icon: 'info', onClick: function () { A.revealed[i] = true; ctx.save(true); drawPred(); updateFoot(); } }));
+        }
+        var card = h('div', { class: 'pred-row' + (checked ? (okRow ? ' ok' : ' no') : '') },
           h('div', { class: 'pred-in' }, h('h4', null, 'בדיקה ' + (i + 1) + ' - קלט'), h('pre', { class: 'codeblock', dir: 'ltr' }, (r.input || []).join('\n') || '(אין קלט)')),
           h('div', { class: 'pred-out' }, h('h4', null, 'החיזוי שלי'), ta),
-          checked ? h('div', { class: 'pred-real' },
-            h('h4', null, A.predCorrect[i] ? 'נכון!' : 'הפלט האמיתי', A.predCorrect[i] ? ico('check') : ico('x')),
-            h('pre', { class: 'codeblock', dir: 'ltr' }, A.truth[i] || '')) : null);
+          side);
         tbl.appendChild(card);
       });
     }
@@ -917,8 +933,9 @@
         if (!allPredFilled()) foot.appendChild(h('span', { class: 'muted small' }, 'כתבו חיזוי לכל הבדיקות כדי להמשיך.'));
       } else {
         var ok = ownCount() >= needOwn || T.done.tests;
+        if (openRows() > 0) foot.appendChild(btn('בדיקה חוזרת', { cls: 'lg', icon: 'test', disabled: running, onClick: checkAll }));
         foot.appendChild(btn(T.done.tests ? 'לשלב הבא - שלד' : 'המשך לשלד האלגוריתם', { cls: 'primary lg', icon: 'arrowL', disabled: !ok,
-          onClick: function () { T.done.tests ? ctx.go('skeleton') : ctx.complete('tests', { predCorrect: A.predCorrect, own: A.own }); } }));
+          onClick: function () { T.done.tests ? ctx.go('skeleton') : ctx.complete('tests', { predCorrect: A.predCorrect, predChecks: A.predChecks || 1, own: A.own }); } }));
         if (!ok) foot.appendChild(h('span', { class: 'muted small' }, 'השלימו את הבדיקות שלכם (קלט ופלט צפוי) כדי להמשיך.'));
       }
     }
@@ -926,22 +943,28 @@
     var running = false;
     function checkAll() {
       running = true; updateFoot();
-      var truth = [], pc = [], failed = false;
+      var truth = (A.truth || []).slice(), rowOk = (A.rowOk || []).slice(), failed = false;
+      var first = !A.checked;
       return rows.reduce(function (p, r, i) {
+        if (!first && rowClosed(i)) return p;                     // already right, or its output was revealed
         return p.then(function () { return CSRun.run(ctx.task.solution, { input: (r.input || []).slice(), maxSteps: 500000 }); })
           .then(function (res) {
             var out = res.stdout || '';
             if (res.status !== 'ok') failed = true;
             truth[i] = out;
             // if the reference run failed we cannot judge the student - count as correct
-            pc[i] = res.status === 'ok' ? predictionMatches(A.preds[i] || '', out) : true;
+            rowOk[i] = res.status === 'ok' ? predictionMatches(A.preds[i] || '', out) : true;
           });
       }, Promise.resolve()).then(function () {
-        A.truth = truth; A.predCorrect = pc; A.checked = true; ctx.save(true);
+        A.truth = truth; A.rowOk = rowOk; A.checked = true; A.predChecks = (A.predChecks || 0) + 1;
+        // credit: right at a check made before the real output of that row was shown (a corrected prediction counts)
+        A.predCorrect = rows.map(function (r, i) { return rowOk[i] === true && !(A.revealed[i] && !(A.predCorrect || [])[i]); });
+        ctx.save(true);
         running = false; drawPred(); drawOwn(); updateFoot();
-        var good = pc.filter(Boolean).length;
-        checkMsg.hidden = false; checkMsg.className = 'feedback ' + (good === pc.length ? 'good' : 'bad');
-        checkMsg.textContent = good === pc.length ? 'מצוין! כל החיזויים נכונים.' : 'חזיתם נכון ' + good + ' מתוך ' + pc.length + '. התבוננו בהבדלים - זה בדיוק מה שיעזור לכם לכתוב את הקוד.';
+        var good = rowOk.filter(function (x) { return x === true; }).length, open = openRows();
+        checkMsg.hidden = false; checkMsg.className = 'feedback ' + (good === rows.length ? 'good' : 'bad');
+        checkMsg.textContent = good === rows.length ? 'מצוין! כל החיזויים נכונים.'
+          : 'חזיתם נכון ' + good + ' מתוך ' + rows.length + '.' + (open ? ' אפשר לתקן את החיזויים המסומנים ולבדוק שוב, או להציג את הפלט האמיתי. חיזוי שתוקן נחשב נכון.' : ' התבוננו בהבדלים - זה בדיוק מה שיעזור לכם לכתוב את הקוד.');
         if (failed) checkMsg.textContent += ' (בדיקה אחת לא רצה בצד שלנו - לא נספרה נגדכם.)';
         checkMsg.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
       }).catch(function (e) { running = false; updateFoot(); reportError(e); });
@@ -964,7 +987,8 @@
       while (tries++ < 10 && sameArr(sh.filter(function (x) { return x[0] === 'S'; }), ids.filter(function (x) { return x[0] === 'S'; }))) sh = shuffle(ids);
       A.ord = sh; A.bin = []; A.attempts = 0;
     }
-    host.appendChild(h('p', { class: 'lead' }, (SK.prompt || 'סדרו את שלבי האלגוריתם') + (hasBin ? '. שימו לב: חלק מהשלבים לא שייכים לפתרון - גררו אותם ל"לא שייך".' : '.')));
+    host.appendChild(h('p', { class: 'lead' }, (SK.prompt || 'סדרו את שלבי האלגוריתם') + (hasBin ? '. שימו לב: חלק מהשלבים לא שייכים לפתרון - גררו אותם ל"לא שייך".' : '.')
+      + ((SK.deps || SK.together) ? ' שני שלבים שלא תלויים זה בזה יכולים לבוא בכל סדר.' : '')));
     host.appendChild(h('p', { class: 'muted small how' }, ico('info'), 'גוררים בעכבר, או משתמשים בחצים. במקלדת: Tab ואז Alt+חץ למעלה/למטה.'));
     var lists = [{ key: 'ord', title: 'סדר האלגוריתם (מהראשון לאחרון)', cls: 'ord', empty: 'גררו לכאן את השלבים', reorder: true, numbered: true,
       action: hasBin ? { to: 'bin', label: 'לא שייך', short: 'לא שייך', icon: 'x' } : null }];
@@ -985,18 +1009,24 @@
     function check() {
       A.attempts = (A.attempts || 0) + 1;
       var mk = {}, right = 0;
-      A.ord.forEach(function (id, i) { var it = items[id]; var ok = it.ok && it.pos === i; mk[id] = ok ? 'ok' : 'no'; if (ok) right++; });
+      // Any order that respects the task's constraints is correct (two independent calculations may be swapped,
+      // a method may be written before or after Main...). See js/order.js.
+      var realOrder = A.ord.filter(function (id) { return items[id].ok; }).map(function (id) { return items[id].pos; });
+      var res = window.CWOrder ? window.CWOrder.check(realOrder, SK.steps.length, SK.deps, SK.together)
+        : { ok: sameArr(realOrder, SK.steps.map(function (_, i) { return i; })), bad: realOrder.filter(function (s, p) { return s !== p; }) };
+      var badSet = {}; res.bad.forEach(function (s) { badSet[s] = true; });
+      A.ord.forEach(function (id) { var it = items[id]; var ok = it.ok && !badSet[it.pos]; mk[id] = ok ? 'ok' : 'no'; if (ok) right++; });
       A.bin.forEach(function (id) { var ok = !items[id].ok; mk[id] = ok ? 'ok' : 'no'; if (ok) right++; });
-      var all = right === ids.length && A.ord.length === SK.steps.length;
+      var all = right === ids.length && res.ok;
       if (A.firstTry == null) A.firstTry = all;
       board.setMarkers(mk);
       fb.hidden = false;
       if (all) {
         A.correct = true; board.setReadOnly(true);
-        fb.className = 'feedback good'; fb.textContent = A.firstTry ? 'מושלם! סידרתם נכון בניסיון הראשון.' : 'נכון! הסדר מושלם. זה האלגוריתם שלכם.';
+        fb.className = 'feedback good'; fb.textContent = (A.firstTry ? 'מושלם! סידרתם נכון בניסיון הראשון.' : 'נכון! זה האלגוריתם שלכם.') + ((SK.deps || SK.together) ? ' (יש כאן יותר מסדר נכון אחד - כל סדר שבו כל שלב בא אחרי השלבים שהוא צריך מתקבל.)' : '');
       } else {
         fb.className = 'feedback bad';
-        fb.textContent = right + ' מתוך ' + ids.length + ' פריטים במקום הנכון. הפריטים האדומים צריכים תיקון.';
+        fb.textContent = right + ' מתוך ' + ids.length + ' פריטים במקום מתאים. הפריטים האדומים צריכים תיקון: שלב שמופיע לפני שלב שהוא תלוי בו, או שלב שלא שייך לפתרון.';
       }
       ctx.save(true); updateFoot();
     }
@@ -1109,7 +1139,7 @@
       F.blanks.forEach(function (b) {
         var v = String(A.vals[b.id] || '').replace(/\s+/g, '');
         var ok = v.length && (b.accept || []).some(function (a) { return String(a).replace(/\s+/g, '') === v; });
-        if (dotsEl[b.id]) dotsEl[b.id].className = 'qdot ' + (v.length ? (ok ? 'ok' : 'no') : 'no');
+        if (dotsEl[b.id]) dotsEl[b.id].className = 'qdot ' + (v.length ? (ok ? 'ok' : 'maybe') : 'no');
         if (ok) good++;
       });
       return good;
@@ -1117,7 +1147,7 @@
     var qmsg = h('span', { class: 'muted small' });
     box.appendChild(h('div', { class: 'fill-tools' },
       btn('בדיקה מהירה של החורים', { icon: 'check', cls: 'ghost sm', onClick: function () {
-        var g = quick(); qmsg.textContent = g + ' מתוך ' + F.blanks.length + ' חורים נראים נכון. (הבדיקה האמיתית היא הרצת הבדיקות.)';
+        var g = quick(); qmsg.textContent = g + ' מתוך ' + F.blanks.length + ' חורים זוהו כנכונים. צהוב = כתבתם משהו אחר ממה שציפיתי, וייתכן שהוא נכון (למשל אותו חישוב בסדר אחר). רק הרצת הבדיקות קובעת.';
       } }), qmsg));
     box.appendChild(code); box.appendChild(hintStrip);
     var api = {

@@ -324,7 +324,7 @@ input.blank { font-family: var(--mono); font-size: 15px; color: #ffe3ae; backgro
 input.blank::placeholder { color: #7f99b8; }
 input.blank:focus { outline: 3px solid #ffd27a; border-bottom-style: solid; }
 .qdot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: none; }
-.qdot.ok { background: #46d39a; } .qdot.no { background: #ff6b5f; }
+.qdot.ok { background: #46d39a; } .qdot.no { background: #ff6b5f; } .qdot.maybe { background: #f5b942; }
 .qbtn { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #5d7ea8; background: transparent; color: #cfe0f5; font-size: 13px; line-height: 1; cursor: pointer; padding: 0; font-family: var(--font); }
 .qbtn:hover { background: #2a4a72; }
 .blank-hint { margin: 8px 14px 0; background: #1b3555; color: #ffe3ae; border-radius: 10px; padding: 8px 12px; font-family: var(--font); font-size: .95rem; }
@@ -491,3 +491,7 @@ input.blank:focus { outline: 3px solid #ffd27a; border-bottom-style: solid; }
 
 /* No programming ligatures: beginners must see the real characters (>= and ==, not a single glyph) */
 code, pre, .mono, .stext.mono, .fillcode, .fillcode input, .CodeMirror, .con-out, .con-in, .sim-out, .codeblock { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+
+/* A prediction that is not right yet: stays editable, with the option to reveal the real output */
+.pred-real.retry { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.pred-real.retry h4, .pred-real.retry p { margin: 0; }
